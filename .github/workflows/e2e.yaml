@@ -14,8 +14,8 @@ on:
         required: true
         type: string
         default: cypress/browsers:node16.14.2-slim-chrome100-ff99-edge
-      cypress_test:
-        description: Scenario to test
+      rancher_version:
+        description: Rancher version to deploy
         required: true
         type: string
 
@@ -31,7 +31,7 @@ jobs:
           KUBECONFIG: /etc/rancher/k3s/k3s.yaml
           HELM_VERSION: 3.12.0
           K3S_VERSION: v1.25.9+k3s1
-          RANCHER_VERSION: 2.7.5
+          RANCHER_VERSION: ${{ inputs.rancher_version }}
         run: |
           ## Export information to other jobs
           ETH_DEV=$(ip route | awk '/default via / { print $5 }')
@@ -53,7 +53,6 @@ jobs:
 #     container:
 #       image: ${{ inputs.cypress_image }}
 #       env:
-#         CLUSTER_NAME: local
 #         RANCHER_USER: admin
 #         RANCHER_PASSWORD: rancherpassword
 #         RANCHER_URL: https://${{ needs.installation.outputs.MY_IP }}
@@ -65,7 +64,7 @@ jobs:
 #           browser: ${{ inputs.browser }}
 #           # headless: true
 #           spec: |
-#             cypress/e2e/unit_tests/first_connexion.spec.ts
+#             cypress/e2e/unit_tests/first_connection.spec.ts
 #             cypress/e2e/unit_tests/${{ inputs.cypress_test }}
 #           config-file: cypress.config.ts
 

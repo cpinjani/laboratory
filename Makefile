@@ -25,7 +25,7 @@ install-cert-manager:
 install-rancher: ## Install Rancher via Helm
 	helm repo add rancher-latest https://releases.rancher.com/server-charts/latest
 	helm repo update
-	helm upgrade --install rancher rancher-latest/rancher --version ${RANCHER_VERSION}\
+	helm upgrade --install rancher rancher-latest/rancher --version ${RANCHER_VERSION} \
 		--namespace cattle-system \
 		--create-namespace \
 		--set global.cattle.psp.enabled=false \
@@ -36,7 +36,7 @@ install-rancher: ## Install Rancher via Helm
 		--wait
 	kubectl rollout status deployment rancher -n cattle-system --timeout=300s
 
-prepare-e2e-ci-rancher: install-k3s install-helm install-cert-manager install-rancher## Tests
+prepare-e2e-ci-rancher: install-k3s install-helm install-cert-manager install-rancher ## Tests
 
 clean-k3s:
 	/usr/local/bin/k3s-uninstall.sh
