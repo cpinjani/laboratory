@@ -65,6 +65,7 @@ jobs:
           # headless: true
           spec: |
             cypress/e2e/unit_tests/first_connection.spec.ts
+            cypress/e2e/unit_tests/menu.spec.ts
           config-file: cypress.config.ts
 
       - name: Upload Cypress screenshots
