@@ -45,57 +45,56 @@ jobs:
         MY_HOSTNAME: ${{ steps.installation.outputs.MY_HOSTNAME }}
         MY_IP: ${{ steps.installation.outputs.MY_IP }}
 
-# # Use a Cypress container to run all tests
-#   cypress-tests:
-#     needs:
-#       - installation
-#     runs-on: self-hosted
-#     container:
-#       image: ${{ inputs.cypress_image }}
-#       env:
-#         RANCHER_USER: admin
-#         RANCHER_PASSWORD: rancherpassword
-#         RANCHER_URL: https://${{ needs.installation.outputs.MY_IP }}
-#       options: --add-host ${{ needs.installation.outputs.MY_HOSTNAME }}:${{ needs.installation.outputs.MY_IP }} --ipc=host --user 1000
-#     steps:
-#       - name: Cypress run
-#         uses: cypress-io/github-action@v5
-#         with:
-#           browser: ${{ inputs.browser }}
-#           # headless: true
-#           spec: |
-#             cypress/e2e/unit_tests/first_connection.spec.ts
-#             cypress/e2e/unit_tests/${{ inputs.cypress_test }}
-#           config-file: cypress.config.ts
+# Use a Cypress container to run all tests
+  cypress-tests:
+    needs:
+      - installation
+    runs-on: self-hosted
+    container:
+      image: ${{ inputs.cypress_image }}
+      env:
+        RANCHER_USER: admin
+        RANCHER_PASSWORD: rancherpassword
+        RANCHER_URL: https://${{ needs.installation.outputs.MY_HOSTNAME }}
+      options: --add-host ${{ needs.installation.outputs.MY_HOSTNAME }}:${{ needs.installation.outputs.MY_IP }} --ipc=host --user 1000
+    steps:
+      - name: Cypress run
+        uses: cypress-io/github-action@v5
+        with:
+          browser: ${{ inputs.browser }}
+          # headless: true
+          spec: |
+            cypress/e2e/unit_tests/first_connection.spec.ts
+          config-file: cypress.config.ts
 
-#       - name: Upload Cypress screenshots
-#         uses: actions/upload-artifact@v3
-#         if: failure()
-#         with:
-#           name: cypress-screenshots-tests
-#           path: cypress/screenshots
-#           retention-days: 7
+      - name: Upload Cypress screenshots
+        uses: actions/upload-artifact@v3
+        if: failure()
+        with:
+          name: cypress-screenshots-tests
+          path: cypress/screenshots
+          retention-days: 7
 
-#       # Test run video was always captured, so this action uses "always()" condition
-#       - name: Upload Cypress videos
-#         uses: actions/upload-artifact@v3
-#         if: always()
-#         with:
-#           name: cypress-videos-tests
-#           path: cypress/videos
-#           retention-days: 7
+      # Test run video was always captured, so this action uses "always()" condition
+      - name: Upload Cypress videos
+        uses: actions/upload-artifact@v3
+        if: always()
+        with:
+          name: cypress-videos-tests
+          path: cypress/videos
+          retention-days: 7
 
-#   delete-cluster:
-#     if: always()
-#     needs: [installation, cypress-tests]
-#     runs-on: self-hosted
-#     steps:
+  delete-cluster:
+    if: always()
+    needs: [installation, cypress-tests]
+    runs-on: self-hosted
+    steps:
 
-#       - name: Delete k3s cluster
-#         if: always()
-#         run: |
-#           make clean-all
+      - name: Delete k3s cluster
+        if: always()
+        run: |
+          make clean-all
 
-#       - name: Clean all
-#         if: always()
-#         uses: colpal/actions-clean@v1
+      - name: Clean all
+        if: always()
+        uses: colpal/actions-clean@v1
