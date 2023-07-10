@@ -56,7 +56,7 @@ jobs:
         RANCHER_USER: admin
         RANCHER_PASSWORD: rancherpassword
         RANCHER_URL: https://${{ needs.installation.outputs.MY_HOSTNAME }}/dashboard
-      options: --add-host ${{ needs.installation.outputs.MY_HOSTNAME }}:${{ needs.installation.outputs.MY_IP }} --ipc=host --user 1000
+      options: --add-host ${{ needs.installation.outputs.MY_HOSTNAME }}:${{ needs.installation.outputs.MY_IP }} --ipc=host --user 1001
     steps:
       - name: Checkout
         uses: actions/checkout@v3
