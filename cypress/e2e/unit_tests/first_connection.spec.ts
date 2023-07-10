@@ -19,7 +19,7 @@ describe('First login on Rancher', () => {
   const elemental = new Elemental();
 
   it('Log in and accept terms and conditions', () => {
-    cy.visit('/');
+    cy.visit('/auth/login');
     cy.get("span").then($text => {
       if ($text.text().includes('your first time visiting Rancher')) {
         elemental.firstLogin();
