@@ -21,7 +21,7 @@ on:
 
 jobs:
   installation:
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -49,7 +49,7 @@ jobs:
   cypress-tests:
     needs:
       - installation
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     container:
       image: ${{ inputs.cypress_image }}
       env:
@@ -58,8 +58,6 @@ jobs:
         RANCHER_URL: https://${{ needs.installation.outputs.MY_HOSTNAME }}/dashboard
       options: --add-host ${{ needs.installation.outputs.MY_HOSTNAME }}:${{ needs.installation.outputs.MY_IP }} --ipc=host --user 1001
     steps:
-      - name: Checkout
-        uses: actions/checkout@v3
       - name: Cypress run
         uses: cypress-io/github-action@v5
         with:
@@ -90,7 +88,7 @@ jobs:
   delete-cluster:
     if: always()
     needs: [installation, cypress-tests]
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     steps:
       - name: Checkout
         uses: actions/checkout@v3
