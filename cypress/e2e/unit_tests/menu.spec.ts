@@ -12,25 +12,21 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import { TopLevelMenu } from '~/cypress/support/toplevelmenu';
-import { Elemental } from '~/cypress/support/elemental';
-import '~/cypress/support/commands';
+import { Rancher } from '~/cypress//support/rancher';
 
-
-  Cypress.config();
-  describe('Menu testing', () => {
-    const elemental     = new Elemental();
-    const topLevelMenu  = new TopLevelMenu();
+Cypress.config();
+describe('Menu testing', () => {
+  const rancher = new Rancher();
   
-    beforeEach(() => {
-      cy.login();
-      cy.visit('/');
-    });
-   
-    it('Check Elemental menu', () => {
-      topLevelMenu.openIfClosed();
-
-      // Click on the Elemental's icon
-      elemental.accessElementalMenu(); 
-      });
+  beforeEach(() => {
+    cy.login();
+    cy.visit('/');
   });
+    
+  it('Check Cluster menu', () => {
+    rancher.burgerMenuOpenIfClosed();
+  
+    // Click on the Cluster icon
+    rancher.accessMenu('Cluster Management');
+  });
+});

@@ -12,85 +12,33 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import { TopLevelMenu } from '~/cypress/support/toplevelmenu';
-import { Elemental } from '~/cypress/support/elemental';
+import { Rancher } from '~/cypress/support/rancher';
 import '~/support/commands';
 
 Cypress.config();
 describe('User role testing', () => {
-  const elemental     = new Elemental();
-  const elementalUser = "elemental-user"
-  const stdUser       = "std-user"
-  const topLevelMenu  = new TopLevelMenu();
-  const uiPassword    = "rancherpassword"
+  const rancher    = new Rancher();
+  const stdUser    = "std-user"
+  const uiPassword = "rancherpassword"
 
   beforeEach(() => {
     cy.visit('/');
   });
 
 
-    it('Create elemental user', () => {
-      // User with the elemental-administrator role
-      cy.login();
-      topLevelMenu.openIfClosed();
-      cy.getBySel('side-menu')
-        .contains('Users & Authentication')
-        .click();
-      cy.contains('.title', 'Users')
-        .should('exist');
-      cy.clickButton('Create');
-      cy.typeValue('Username', stdUser);
-      cy.typeValue('New Password', uiPassword);
-      cy.typeValue('Confirm Password', uiPassword);
-      cy.clickButton('Create');
-    });
-
-    it('Create standard user', () => {
-      // User without the elemental-administrator role
-      cy.login();
-      topLevelMenu.openIfClosed();
-      cy.getBySel('side-menu')
-        .contains('Users & Authentication')
-        .click();
-      cy.contains('.title', 'Users')
-        .should('exist');
-      cy.getBySel('masthead-create')
-        .contains('Create')
-        .click();
-      cy.typeValue('Username', elementalUser);
-      cy.typeValue('New Password', uiPassword);
-      cy.typeValue('Confirm Password', uiPassword);
-      cy.contains('Elemental Administrator')
-        .click();
-      cy.getBySel('form-save')
-        .contains('Create')
-        .click();
-    });
-
-    it('Elemental user should access the OS management menu', () => {
-      cy.login(elementalUser, uiPassword);
-      cy.getBySel('banner-title')
-        .contains('Welcome to Rancher');
-      topLevelMenu.openIfClosed();
-      elemental.elementalIcon().should('exist');
-      elemental.accessElementalMenu();
-      elemental.checkElementalNav();
-    });
-
-    it('Standard user should not access the OS management menu', () => {
-      cy.login(stdUser, uiPassword);
-      cy.getBySel('banner-title')
-        .contains('Welcome to Rancher');
-      topLevelMenu.openIfClosed();
-      elemental.elementalIcon().should('exist');
-      elemental.accessElementalMenu();
-      // User without appropriate role will get a specific page
-      cy.getBySel('elemental-icon')
-        .should('exist');
-      cy.getBySel('elemental-description-text')
-        .contains('Elemental is a software stack')
-        .should('exist');
-      cy.getBySel('warning-not-install-or-no-schema')
-        .should('exist');
-    });
+  it('Create standard user', () => {
+    // User without the administrator role
+    cy.login();
+    rancher.burgerMenuOpenIfClosed();
+    rancher.createUser(stdUser, uiPassword);
   });
+
+  it('Standard user should access the Cluster management menu', () => {
+    cy.login(stdUser, uiPassword);
+    cy.getBySel('banner-title')
+      .contains('Welcome to Rancher');
+    rancher.burgerMenuOpenIfClosed();
+    rancher.checkNavIcon('cluster').should('exist');
+    rancher.accessMenu('Cluster Management');
+  });
+});

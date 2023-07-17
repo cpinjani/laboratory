@@ -24,7 +24,7 @@ module.exports = (on: Cypress.PluginEvents, config: Cypress.PluginConfigOptions)
   // `config` is the resolved Cypress config
   const url = process.env.RANCHER_URL || 'https://localhost:8005';
 
-  config.baseUrl                  = url.replace(/\/$/, );
+  config.baseUrl                  = url.replace(/\/$/, '');
   config.env.cache_session        = process.env.CACHE_SESSION || false;
   config.env.username             = process.env.RANCHER_USER;
   config.env.password             = process.env.RANCHER_PASSWORD;

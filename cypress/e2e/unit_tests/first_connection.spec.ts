@@ -12,21 +12,12 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import { Elemental } from '~/cypress/support/elemental';
+import { Rancher } from '~/cypress/support/rancher';
 
 Cypress.config();
 describe('First login on Rancher', () => {
-  const elemental = new Elemental();
-
+  const rancher = new Rancher();
   it('Log in and accept terms and conditions', () => {
-    cy.visit('/auth/login');
-    cy.get("span").then($text => {
-      if ($text.text().includes('your first time visiting Rancher')) {
-        elemental.firstLogin();
-      }
-      else {
-        cy.log('Rancher already initialized, no need to handle first login.')
-      }
-    })
+    rancher.firstLogin();
   });
 });

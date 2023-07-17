@@ -19,7 +19,6 @@ declare global {
   namespace Cypress {
     interface Chainable {
       // Functions declared in commands.ts
-      addHelmRepo(repoName: string, repoUrl: string, repoType?: string,): Chainable<Element>;
       addMachInvAnnotation(annotationName: string, annotationValue: string):Chainable<Element>;
       addMachInvLabel(labelName: string, labelValue: string, useHardwareLabels?: boolean):Chainable<Element>;
       addMachRegAnnotation(annotationName: string, annotationValue: string):Chainable<Element>;
@@ -33,7 +32,6 @@ declare global {
       checkMachRegAnnotation(machRegName: string, annotationName: string, annotationValue: string):Chainable<Element>;
       checkMachRegLabel(machRegName: string, labelName: string, labelValue: string):Chainable<Element>;
       clickButton(label: string,): Chainable<Element>;
-      clickClusterMenu(listLabel: string[],): Chainable<Element>;
       clickElementalMenu(label: string,): Chainable<Element>;
       clickNavMenu(listLabel: string[],): Chainable<Element>;
       confirmDelete(): Chainable<Element>;
