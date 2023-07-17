@@ -13,7 +13,6 @@ limitations under the License.
 */
 
 import { Rancher } from '~/cypress/support/rancher';
-import '~/support/commands';
 
 Cypress.config();
 describe('User role testing', () => {
