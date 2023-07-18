@@ -37,7 +37,7 @@ describe('User role testing', () => {
     cy.getBySel('banner-title')
       .contains('Welcome to Rancher');
     rancher.burgerMenuOpenIfClosed();
-    rancher.checkNavIcon('cluster').should('exist');
+    rancher.checkNavIcon('cluster-management').should('exist');
     rancher.accessMenu('Cluster Management');
   });
 });
