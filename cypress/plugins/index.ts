@@ -22,8 +22,9 @@ require('dotenv').config();
 module.exports = (on: Cypress.PluginEvents, config: Cypress.PluginConfigOptions) => {
   // `on` is used to hook into various events Cypress emits
   // `config` is the resolved Cypress config
-  
-  config.env.baseUrl              = process.env.RANCHER_URL;
+  const url = process.env.RANCHER_URL || 'https://localhost/dashboard';
+
+  config.baseUrl                  = url.replace(/\/$/, '');
   config.env.cache_session        = process.env.CACHE_SESSION || false;
   config.env.username             = process.env.RANCHER_USER;
   config.env.password             = process.env.RANCHER_PASSWORD;
